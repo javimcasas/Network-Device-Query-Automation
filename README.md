@@ -1,5 +1,5 @@
 
-# Network Device Automation Tool
+# Network Device Query Automation Tool
 
 ![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
@@ -34,8 +34,8 @@ Esta aplicación permite automatizar la conexión SSH a múltiples dispositivos 
 1. **Clonar el repositorio**
 
 ```bash
-git clone https://github.com/tu-usuario/network-automation.git
-cd network-automation
+git clone https://github.com/javimcasas/Network-Device-Query-Automation
+cd Network-Device-Query-Automation
 ```
 
 2. **Crear entorno virtual** (recomendado)

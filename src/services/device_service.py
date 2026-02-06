@@ -1,5 +1,5 @@
 """Servicio para gestionar operaciones con dispositivos de red."""
-from typing import List
+from typing import List, Optional
 from datetime import datetime
 from pathlib import Path
 
@@ -38,43 +38,44 @@ class DeviceService:
         print("="*80)
         print(f"Total de dispositivos: {len(devices)}\n")
     
-    def execute_automation(self, devices: List[Device]) -> Path:
+    def execute_automation(
+        self,
+        devices: List[Device],
+        jump_host: Optional[str] = None,
+        jump_user: Optional[str] = None,
+        jump_pass: Optional[str] = None,
+    ) -> Path:
         """
         Ejecuta la automatización sobre los dispositivos.
-        
-        Args:
-            devices: Lista de dispositivos a procesar
-            
-        Returns:
-            Path al archivo de resultados generado
         """
         print("\n🚀 Iniciando proceso de automatización...\n")
         
-        # Validar que hay dispositivos
         if not devices:
             print("⚠ No hay dispositivos para procesar\n")
             raise ValueError("No hay dispositivos registrados")
         
-        # Mostrar resumen
         print(f"📋 Dispositivos a procesar: {len(devices)}")
         for device in devices:
             params = device.get_parameters_list()
             print(f"  • {device.name} ({len(params)} parámetros)")
         print()
         
-        # Ejecutar comandos en cada dispositivo
         all_results: List[CommandResult] = []
         
         for idx, device in enumerate(devices, 1):
             print(f"\n[{idx}/{len(devices)}] Procesando {device.name}...")
-            results = self.ssh_service.execute_commands_on_device(device)
+            results = self.ssh_service.execute_commands_on_device(
+                device,
+                jump_host=jump_host,
+                jump_user=jump_user,
+                jump_pass=jump_pass,
+            )
             all_results.extend(results)
         
-        # Generar archivo de resultados
         output_file = self._generate_output_file(all_results)
         
         print(f"\n{'='*70}")
-        print(f"✓ Proceso completado exitosamente")
+        print("✓ Proceso completado exitosamente")
         print(f"📄 Resultados guardados en: {output_file}")
         print(f"{'='*70}\n")
         
